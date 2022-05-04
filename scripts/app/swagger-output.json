@@ -1,0 +1,1349 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "API: offchain-auction",
+    "description": ""
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Order",
+      "description": "Orders endpoints"
+    },
+    {
+      "name": "Auction",
+      "description": "Auctions endpoints"
+    },
+    {
+      "name": "Account",
+      "description": "Account endpoints"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/order": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "Add new order",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Where side 0 - buy(default), 1 - sell",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01"
+                },
+                "side": {
+                  "type": "number",
+                  "example": 0
+                },
+                "commodity": {
+                  "type": "string",
+                  "example": "0x536af9300FbEEf4bCf6ef669B571f56A5C710e1A"
+                },
+                "tokenId": {
+                  "type": "number",
+                  "example": 109
+                },
+                "currency": {
+                  "type": "string",
+                  "example": "0x944f3308686961d1676496EB72433f20CB908ed6"
+                },
+                "amount": {
+                  "type": "string",
+                  "example": "1200000000000000000000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "6232e92a3d0d63faa893cb48"
+                },
+                "order": {
+                  "$ref": "#/definitions/MarketOrder"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction": {
+      "post": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Add new auction",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01"
+                },
+                "commodity": {
+                  "type": "string",
+                  "example": "0x536af9300FbEEf4bCf6ef669B571f56A5C710e1A"
+                },
+                "tokenId": {
+                  "type": "number",
+                  "example": 109
+                },
+                "currency": {
+                  "type": "string",
+                  "example": "0x944f3308686961d1676496EB72433f20CB908ed6"
+                },
+                "minAmount": {
+                  "type": "string",
+                  "example": "1200000000000000000000"
+                },
+                "expiry": {
+                  "type": "number",
+                  "example": 1647452588000
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auction": {
+                  "$ref": "#/definitions/Auction"
+                },
+                "order": {
+                  "$ref": "#/definitions/MarketOrder"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/order/{id}/reduce": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "Reduce order amount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sign": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d153"
+                },
+                "amount": {
+                  "type": "string",
+                  "example": "1200000000000000000000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "boolean",
+              "example": true,
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/order/{id}/sign": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "Sign order after creating",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sign": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d153"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "boolean",
+              "example": true,
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/bid/{id}/sign": {
+      "post": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Sign auction bid after creating",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction bid ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sign": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d153"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "boolean",
+              "example": true,
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/{id}/sign": {
+      "post": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Sign auction after creating",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sign": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d153"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "boolean",
+              "example": true,
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/{id}/bid": {
+      "post": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Add auction bid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account": {
+                  "type": "string",
+                  "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01"
+                },
+                "amount": {
+                  "type": "string",
+                  "example": "1200000000000000000000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "6232e92a3d0d63faa893cb48"
+                },
+                "auctionId": {
+                  "type": "string",
+                  "example": "6232e92a3d0d63faa893cb48"
+                },
+                "order": {
+                  "$ref": "#/definitions/MarketOrder"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/order/{id}/status": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "description": "Set order status (canceled, executed)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "example": 1
+                },
+                "tx": {
+                  "type": "string",
+                  "example": "0x8102feb1b57bbe071e303264de1fd1f3ba690d27706c185c8c81fa75bda8327a"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Order"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/{id}/status": {
+      "post": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Set auction status (canceled, executed)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "example": 1
+                },
+                "tx": {
+                  "type": "string",
+                  "example": "0x8102feb1b57bbe071e303264de1fd1f3ba690d27706c185c8c81fa75bda8327a"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Auction"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/order/{id}/get": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "Get order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "6232e92a3d0d63faa893cb48"
+                },
+                "order": {
+                  "$ref": "#/definitions/MarketOrder"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/{id}/get": {
+      "get": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Get auction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auction": {
+                  "$ref": "#/definitions/Auction"
+                },
+                "order": {
+                  "$ref": "#/definitions/MarketOrder"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/{id}/bids": {
+      "get": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Get auction bids",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/bid/{id}": {
+      "get": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Get auction bid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Auction bid ID",
+            "schema": {
+              "type": "string",
+              "example": "6232e92a3d0d63faa893cb48"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "6232e92a3d0d63faa893cb48"
+                },
+                "order": {
+                  "$ref": "#/definitions/MarketOrder"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{side}/list": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "Get orders list",
+        "parameters": [
+          {
+            "name": "side",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order side, 0 - buy, 1, sell",
+            "schema": {
+              "type": "string",
+              "example": "0"
+            }
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "description": "Order account",
+            "schema": {
+              "type": "string",
+              "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+            }
+          },
+          {
+            "name": "tokenId",
+            "in": "query",
+            "description": "Order tokenIds array",
+            "schema": {
+              "type": "array",
+              "example": [
+                12,
+                13
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Order currency array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "commodity",
+            "in": "query",
+            "description": "Order commodity array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auction/list": {
+      "get": {
+        "tags": [
+          "Auction"
+        ],
+        "description": "Get auctions list",
+        "parameters": [
+          {
+            "name": "side",
+            "in": "query",
+            "description": "Order side, 0 - buy, 1, sell",
+            "schema": {
+              "type": "string",
+              "example": "0"
+            }
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "description": "Order account",
+            "schema": {
+              "type": "string",
+              "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+            }
+          },
+          {
+            "name": "tokenId",
+            "in": "query",
+            "description": "Order tokenIds array",
+            "schema": {
+              "type": "array",
+              "example": [
+                12,
+                13
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Order currency array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "commodity",
+            "in": "query",
+            "description": "Order commodity array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Auction"
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/account/{account}/orders": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "description": "Get account orders",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Account address",
+            "schema": {
+              "type": "string",
+              "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01"
+            }
+          },
+          {
+            "name": "side",
+            "in": "query",
+            "description": "Order side, 0 - buy, 1, sell",
+            "schema": {
+              "type": "string",
+              "example": "0"
+            }
+          },
+          {
+            "name": "tokenId",
+            "in": "query",
+            "description": "Order tokenIds array",
+            "schema": {
+              "type": "array",
+              "example": [
+                12,
+                13
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Order currency array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "commodity",
+            "in": "query",
+            "description": "Order commodity array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Order status",
+            "schema": 0,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/account/{account}/auctions": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "description": "Get account",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Account address",
+            "schema": {
+              "type": "string",
+              "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01"
+            }
+          },
+          {
+            "name": "side",
+            "in": "query",
+            "description": "Order side, 0 - buy, 1, sell",
+            "schema": {
+              "type": "string",
+              "example": "0"
+            }
+          },
+          {
+            "name": "tokenId",
+            "in": "query",
+            "description": "Order tokenIds array",
+            "schema": {
+              "type": "array",
+              "example": [
+                12,
+                13
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Order currency array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "commodity",
+            "in": "query",
+            "description": "Order commodity array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Order status",
+            "schema": 0,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Auction"
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/account/{account}/bids": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "description": "Get account",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Account address",
+            "schema": {
+              "type": "string",
+              "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01"
+            }
+          },
+          {
+            "name": "side",
+            "in": "query",
+            "description": "Order side, 0 - buy, 1, sell",
+            "schema": {
+              "type": "string",
+              "example": "0"
+            }
+          },
+          {
+            "name": "tokenId",
+            "in": "query",
+            "description": "Order tokenIds array",
+            "schema": {
+              "type": "array",
+              "example": [
+                12,
+                13
+              ],
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Order currency array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "commodity",
+            "in": "query",
+            "description": "Order commodity array",
+            "schema": {
+              "type": "array",
+              "example": [
+                "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Order status",
+            "schema": 0,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6232e92a3d0d63faa893cb48"
+        },
+        "account": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "side": {
+          "type": "number",
+          "example": 0
+        },
+        "commodity": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "tokenId": {
+          "type": "number",
+          "example": 13
+        },
+        "tokenType": {
+          "type": "number",
+          "example": 0
+        },
+        "currency": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "amount": {
+          "type": "string",
+          "example": "1200000000000000000000"
+        },
+        "expiry": {
+          "type": "number",
+          "example": 1648638722
+        },
+        "nonce": {
+          "type": "number",
+          "example": 0
+        },
+        "sign": {
+          "type": "string",
+          "example": "0xDAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d15397fddfbac85d334709C92C2B473b01DAb770d153"
+        },
+        "created": {
+          "type": "number",
+          "example": 1647452588000
+        },
+        "status": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "Auction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6232e92a3d0d63faa893cb48"
+        },
+        "account": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "commodity": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "tokenId": {
+          "type": "number",
+          "example": 13
+        },
+        "tokenType": {
+          "type": "number",
+          "example": 0
+        },
+        "currency": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "minAmount": {
+          "type": "string",
+          "example": "1200000000000000000000"
+        },
+        "expiry": {
+          "type": "number",
+          "example": 1647452588000
+        },
+        "active": {
+          "type": "number",
+          "example": 0
+        },
+        "created": {
+          "type": "number",
+          "example": 1647452588000
+        },
+        "status": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "MarketOrder": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "side": {
+          "type": "number",
+          "example": 0
+        },
+        "commodity": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "tokenIds": {
+          "type": "array",
+          "example": [
+            13
+          ],
+          "items": {
+            "type": "number"
+          }
+        },
+        "currency": {
+          "type": "string",
+          "example": "0xe2472Fc12053B8F8deB050D7e2975C4d4bb77772"
+        },
+        "amount": {
+          "type": "string",
+          "example": "1200000000000000000000"
+        },
+        "expiry": {
+          "type": "number",
+          "example": 1648638
+        },
+        "nonce": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "ORDER_SIDE": {
+      "type": "object",
+      "properties": {
+        "BUY": {
+          "type": "number",
+          "example": 0
+        },
+        "SELL": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "ORDER_STATUS": {
+      "type": "object",
+      "properties": {
+        "NONE": {
+          "type": "number",
+          "example": 0
+        },
+        "CANCELLED": {
+          "type": "number",
+          "example": 1
+        },
+        "EXECUTED": {
+          "type": "number",
+          "example": 2
+        },
+        "FAILED": {
+          "type": "number",
+          "example": 999
+        }
+      }
+    },
+    "ERROR_CODES": {
+      "type": "object",
+      "properties": {
+        "OTHER": {
+          "type": "number",
+          "example": 9999
+        },
+        "DB_ERROR": {
+          "type": "number",
+          "example": 2000
+        },
+        "CONTRACT_ERROR": {
+          "type": "number",
+          "example": 3000
+        },
+        "CONTRACT_NOT_OWNER_NFT": {
+          "type": "number",
+          "example": 3021
+        },
+        "CONTRACT_NOT_ALLOWED_NFT": {
+          "type": "number",
+          "example": 3023
+        },
+        "CONTRACT_NOT_ALLOWED_ERC20": {
+          "type": "number",
+          "example": 3024
+        },
+        "CONTRACT_INSUFFICIENT_ERC20": {
+          "type": "number",
+          "example": 3031
+        }
+      }
+    },
+    "FailedResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Error message"
+        },
+        "code": {
+          "type": "number",
+          "example": 9999
+        },
+        "extra": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    }
+  }
+}

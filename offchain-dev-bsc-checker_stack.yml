@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  offchain-dev-bsc-checker:
+    image: harbor.gravis.finance/contracts/offchain-auction:dev
+    # ports:
+    #   - "6060:3001"
+    env_file:
+    - .dev-checker.env
+    environment:
+      - NODE_ENV=dev
+    command: ["npm", "run", "statusChecker"]
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          cpus: '0.01'
+          memory: 256M
+      restart_policy:
+        condition: any

@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  offchain-prod-polygon-market:
+    image: harbor.gravis.finance/contracts/offchain-auction:prod
+    ports:
+      - "6066:3001"
+    env_file:
+    - .prod-polygon.env
+    environment:
+      - NODE_ENV=prod
+    command: ["npm", "run", "start"]
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          cpus: '0.01'
+          memory: 256M
+      restart_policy:
+        condition: any
